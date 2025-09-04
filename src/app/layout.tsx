@@ -3,8 +3,8 @@ import { Inter, Bebas_Neue } from 'next/font/google'
 import './globals.css'
 import { Header } from '@/components/Header'
 import { Footer } from '@/components/Footer'
-import { ThemeProvider } from '@/components/ThemeProvider'
 import { ThemeScript } from '@/components/ThemeScript'
+import { Providers } from '@/components/Providers'
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -60,11 +60,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             })
           }}
         />
-        <ThemeProvider>
+        <Providers>
           <Header />
           <main className="flex-1">{children}</main>
           <Footer />
-        </ThemeProvider>
+        </Providers>
       </body>
     </html>
   )

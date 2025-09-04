@@ -27,7 +27,8 @@ export default async function sitemap() {
     '/fan-club/join',
     '/fan-club/dashboard',
     '/artists/dashboard',
-    '/artists/analytics'
+    '/artists/analytics',
+    '/cookie-settings'
   ]
   const artistUrls = ARTISTS.map(a => `/artists/${a.slug}`)
   const newsUrls = NEWS.map(n => `/news/${n.slug}`)

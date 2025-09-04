@@ -15,6 +15,7 @@ export function Footer() {
             <li><Link className="text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition" href="/privacy">Privacy Policy</Link></li>
             <li><Link className="text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition" href="/terms">Terms of Use</Link></li>
             <li><Link className="text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition" href="/do-not-sell-share">Do Not Sell/Share</Link></li>
+            <li><Link className="text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition" href="/cookie-settings">Cookie Settings</Link></li>
             <li className="flex gap-4 pt-2">
               <a className="text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white transition" href="#" aria-label="Instagram">Instagram</a>
               <a className="text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white transition" href="#" aria-label="TikTok">TikTok</a>

@@ -86,7 +86,7 @@ export default function Privacy() {
         <li><strong>Analytics</strong> (traffic/performance)</li>
         <li><strong>Advertising</strong> (interest-based ads, frequency capping)</li>
       </ul>
-      <p>Manage via browser controls and our <a href="#cookie-settings">Cookie Settings</a> tool (where available). Blocking certain cookies may impact functionality.</p>
+      <p>Manage via browser controls and our <a href="/cookie-settings" className="text-blue-600 dark:text-blue-400 hover:underline">Cookie Settings</a> tool. Blocking certain cookies may impact functionality.</p>
 
       <h2 id="choices">
         Your Privacy Choices (CPRA/GDPR) <a className="anchor-link" href="#choices">#</a>
