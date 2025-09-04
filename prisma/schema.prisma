@@ -470,6 +470,45 @@ enum MembershipTier {
   VIP
 }
 
+// Cookie Consent
+model ConsentState {
+  id            String   @id @default(cuid())
+  userId        String?  // if user is authenticated
+  sessionId     String?  @unique
+  region        String?  // e.g., "US-CA", "EEA"
+  gpc           Boolean  @default(false)
+  necessary     Boolean  @default(true)  // always true
+  functional    Boolean  @default(false)
+  analytics     Boolean  @default(false)
+  advertising   Boolean  @default(false)
+  doNotSellShare Boolean @default(false)
+  version       Int
+  updatedAt     DateTime @updatedAt
+  createdAt     DateTime @default(now())
+  
+  events        ConsentEvent[]
+}
+
+model ConsentEvent {
+  id          String   @id @default(cuid())
+  stateId     String?
+  state       ConsentState? @relation(fields: [stateId], references: [id])
+  userId      String?
+  sessionId   String?
+  ipHash      String?   // sha256 hash for privacy
+  userAgent   String?
+  region      String?
+  gpc         Boolean   @default(false)
+  source      String    // "banner" | "settings" | "gpc" | "dns"
+  version     Int
+  beforeJson  Json?
+  afterJson   Json?
+  createdAt   DateTime  @default(now())
+
+  @@index([sessionId])
+  @@index([userId])
+}
+
 // Careers
 model JobPosting {
   id            String    @id @default(cuid())
