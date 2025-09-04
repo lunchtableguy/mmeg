@@ -1,0 +1,545 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  password      String
+  role          UserRole  @default(BAND)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  artist        Artist?
+  sentMessages     Message[] @relation("SentMessages")
+  receivedMessages Message[] @relation("ReceivedMessages")
+  forumPosts    ForumPost[]
+  forumReplies  ForumReply[]
+  subscriptions Subscription[]
+  pages         Page[]
+  orders        Order[]
+  blogPosts     BlogPost[]
+  playlists     Playlist[]
+  memberships   Membership[]
+}
+
+enum UserRole {
+  OWNER
+  ADMIN
+  ACCOUNT_EXECUTIVE
+  BAND
+}
+
+model Artist {
+  id              String    @id @default(cuid())
+  userId          String    @unique
+  user            User      @relation(fields: [userId], references: [id])
+  
+  bandName        String
+  bio             String?   @db.Text
+  contactInfo     String?
+  profileImage    String?
+  headerImage     String?
+  
+  website         String?
+  spotify         String?
+  instagram       String?
+  facebook        String?
+  twitter         String?
+  youtube         String?
+  tiktok          String?
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  albums          Album[]
+  tracks          Track[]
+  tourDates       TourDate[]
+  events          Event[]
+  documents       Document[]
+  subscribers     Subscription[]
+  announcements   AnnouncementRecipient[]
+  merchItems      MerchItem[]
+  playlists       Playlist[]
+  blogPosts       BlogPost[]
+}
+
+model Album {
+  id            String    @id @default(cuid())
+  artistId      String
+  artist        Artist    @relation(fields: [artistId], references: [id])
+  
+  title         String
+  releaseDate   DateTime?
+  coverImage    String?
+  streamingLinks Json?
+  trackList     Json?
+  type          AlbumType @default(ALBUM)
+  
+  tracks        Track[]
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Track {
+  id            String    @id @default(cuid())
+  albumId       String
+  album         Album     @relation(fields: [albumId], references: [id])
+  artistId      String
+  artist        Artist    @relation(fields: [artistId], references: [id])
+  
+  title         String
+  duration      Int?      // in seconds
+  trackNumber   Int?
+  streamingLinks Json?
+  isrc          String?   // International Standard Recording Code
+  
+  syncLicenses  SyncLicense[]
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+enum AlbumType {
+  SINGLE
+  EP
+  ALBUM
+  COMPILATION
+}
+
+model TourDate {
+  id          String    @id @default(cuid())
+  artistId    String
+  artist      Artist    @relation(fields: [artistId], references: [id])
+  
+  venue       String
+  city        String
+  state       String?
+  country     String
+  date        DateTime
+  ticketLink  String?
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Message {
+  id          String    @id @default(cuid())
+  senderId    String
+  sender      User      @relation("SentMessages", fields: [senderId], references: [id])
+  recipientId String
+  recipient   User      @relation("ReceivedMessages", fields: [recipientId], references: [id])
+  
+  subject     String
+  content     String    @db.Text
+  read        Boolean   @default(false)
+  
+  createdAt   DateTime  @default(now())
+}
+
+model ForumCategory {
+  id          String      @id @default(cuid())
+  name        String
+  description String?
+  order       Int         @default(0)
+  
+  posts       ForumPost[]
+}
+
+model ForumPost {
+  id          String        @id @default(cuid())
+  categoryId  String
+  category    ForumCategory @relation(fields: [categoryId], references: [id])
+  authorId    String
+  author      User          @relation(fields: [authorId], references: [id])
+  
+  title       String
+  content     String        @db.Text
+  pinned      Boolean       @default(false)
+  
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  
+  replies     ForumReply[]
+}
+
+model ForumReply {
+  id        String    @id @default(cuid())
+  postId    String
+  post      ForumPost @relation(fields: [postId], references: [id])
+  authorId  String
+  author    User      @relation(fields: [authorId], references: [id])
+  
+  content   String    @db.Text
+  
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Document {
+  id          String    @id @default(cuid())
+  artistId    String
+  artist      Artist    @relation(fields: [artistId], references: [id])
+  
+  title       String
+  type        DocumentType
+  fileUrl     String
+  fileSize    Int
+  
+  createdAt   DateTime  @default(now())
+}
+
+enum DocumentType {
+  CONTRACT
+  RIDER
+  INVOICE
+  PRESS_KIT
+  OTHER
+}
+
+model Subscription {
+  id          String    @id @default(cuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+  artistId    String
+  artist      Artist    @relation(fields: [artistId], references: [id])
+  
+  createdAt   DateTime  @default(now())
+  
+  @@unique([userId, artistId])
+}
+
+model Announcement {
+  id          String    @id @default(cuid())
+  title       String
+  content     String    @db.Text
+  priority    AnnouncementPriority @default(NORMAL)
+  
+  createdAt   DateTime  @default(now())
+  expiresAt   DateTime?
+  
+  recipients  AnnouncementRecipient[]
+}
+
+enum AnnouncementPriority {
+  LOW
+  NORMAL
+  HIGH
+  URGENT
+}
+
+model AnnouncementRecipient {
+  id             String       @id @default(cuid())
+  announcementId String
+  announcement   Announcement @relation(fields: [announcementId], references: [id])
+  artistId       String
+  artist         Artist       @relation(fields: [artistId], references: [id])
+  
+  read           Boolean      @default(false)
+  readAt         DateTime?
+  
+  @@unique([announcementId, artistId])
+}
+
+model Page {
+  id          String    @id @default(cuid())
+  slug        String    @unique
+  title       String
+  content     String    @db.Text
+  metaDescription String?
+  published   Boolean   @default(false)
+  
+  createdBy   String
+  creator     User      @relation(fields: [createdBy], references: [id])
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+// Events & Shows
+model Event {
+  id            String    @id @default(cuid())
+  artistId      String?
+  artist        Artist?   @relation(fields: [artistId], references: [id])
+  
+  title         String
+  description   String    @db.Text
+  type          EventType
+  venue         String?
+  city          String?
+  state         String?
+  country       String?
+  date          DateTime
+  endDate       DateTime?
+  ticketLink    String?
+  imageUrl      String?
+  featured      Boolean   @default(false)
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+enum EventType {
+  CONCERT
+  FESTIVAL
+  LIVESTREAM
+  MEET_GREET
+  PRIVATE_EVENT
+  RELEASE_PARTY
+}
+
+// Blog/Editorial
+model BlogPost {
+  id            String    @id @default(cuid())
+  slug          String    @unique
+  title         String
+  excerpt       String?
+  content       String    @db.Text
+  coverImage    String?
+  published     Boolean   @default(false)
+  featured      Boolean   @default(false)
+  
+  authorId      String
+  author        User      @relation(fields: [authorId], references: [id])
+  
+  artistId      String?
+  artist        Artist?   @relation(fields: [artistId], references: [id])
+  
+  tags          BlogTag[]
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  publishedAt   DateTime?
+}
+
+model BlogTag {
+  id            String    @id @default(cuid())
+  name          String    @unique
+  slug          String    @unique
+  
+  posts         BlogPost[]
+}
+
+// Merchandise
+model MerchItem {
+  id            String    @id @default(cuid())
+  artistId      String?
+  artist        Artist?   @relation(fields: [artistId], references: [id])
+  
+  name          String
+  description   String    @db.Text
+  price         Float
+  images        Json      // Array of image URLs
+  sizes         Json?     // Available sizes for apparel
+  inventory     Int       @default(0)
+  featured      Boolean   @default(false)
+  active        Boolean   @default(true)
+  
+  orders        OrderItem[]
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Order {
+  id            String    @id @default(cuid())
+  userId        String?
+  user          User?     @relation(fields: [userId], references: [id])
+  
+  email         String
+  name          String
+  shippingAddress Json
+  
+  items         OrderItem[]
+  
+  subtotal      Float
+  shipping      Float
+  tax           Float
+  total         Float
+  
+  status        OrderStatus @default(PENDING)
+  paymentId     String?
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model OrderItem {
+  id            String    @id @default(cuid())
+  orderId       String
+  order         Order     @relation(fields: [orderId], references: [id])
+  
+  merchItemId   String
+  merchItem     MerchItem @relation(fields: [merchItemId], references: [id])
+  
+  quantity      Int
+  price         Float
+  size          String?
+}
+
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+  REFUNDED
+}
+
+// Sync Licensing
+model SyncLicense {
+  id            String    @id @default(cuid())
+  trackId       String
+  track         Track     @relation(fields: [trackId], references: [id])
+  
+  projectName   String
+  licenseType   SyncLicenseType
+  mediaType     String
+  territory     String
+  duration      String
+  fee           Float?
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+enum SyncLicenseType {
+  FILM
+  TV
+  COMMERCIAL
+  VIDEO_GAME
+  ONLINE
+  OTHER
+}
+
+// Playlists
+model Playlist {
+  id            String    @id @default(cuid())
+  name          String
+  description   String?
+  coverImage    String?
+  spotifyUrl    String?
+  appleMusicUrl String?
+  
+  createdBy     String?
+  creator       User?     @relation(fields: [createdBy], references: [id])
+  
+  artistId      String?
+  artist        Artist?   @relation(fields: [artistId], references: [id])
+  
+  featured      Boolean   @default(false)
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+// Membership/Fan Club
+model Membership {
+  id            String    @id @default(cuid())
+  userId        String
+  user          User      @relation(fields: [userId], references: [id])
+  
+  tier          MembershipTier
+  startDate     DateTime  @default(now())
+  endDate       DateTime?
+  active        Boolean   @default(true)
+  stripeCustomerId String?
+  stripeSubscriptionId String?
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+enum MembershipTier {
+  FREE
+  FAN
+  SUPERFAN
+  VIP
+}
+
+// Careers
+model JobPosting {
+  id            String    @id @default(cuid())
+  title         String
+  department    String
+  location      String
+  type          JobType
+  description   String    @db.Text
+  requirements  String    @db.Text
+  active        Boolean   @default(true)
+  
+  applications  JobApplication[]
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+enum JobType {
+  FULL_TIME
+  PART_TIME
+  CONTRACT
+  INTERNSHIP
+}
+
+model JobApplication {
+  id            String    @id @default(cuid())
+  jobPostingId  String
+  jobPosting    JobPosting @relation(fields: [jobPostingId], references: [id])
+  
+  name          String
+  email         String
+  phone         String?
+  resumeUrl     String
+  coverLetter   String?   @db.Text
+  portfolio     String?
+  
+  status        ApplicationStatus @default(NEW)
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+enum ApplicationStatus {
+  NEW
+  REVIEWING
+  INTERVIEW
+  OFFERED
+  REJECTED
+  WITHDRAWN
+}
+
+// Partners/Sponsors
+model Partner {
+  id            String    @id @default(cuid())
+  name          String
+  logo          String
+  website       String?
+  description   String?
+  type          PartnerType
+  active        Boolean   @default(true)
+  featured      Boolean   @default(false)
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+enum PartnerType {
+  BRAND_SPONSOR
+  MEDIA_PARTNER
+  VENUE_PARTNER
+  TECH_PARTNER
+  OTHER
+}
