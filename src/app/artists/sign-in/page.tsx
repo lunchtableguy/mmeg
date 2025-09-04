@@ -8,10 +8,11 @@ export default function ArtistsSignInPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Handle sign in logic
-    console.log('Sign in attempt:', { email, password })
+    // In a real app, this would use NextAuth signIn
+    // For now, we'll just redirect to dashboard
+    window.location.href = '/artists/dashboard'
   }
 
   return (

@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, ChevronDown, Sun, Moon } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useTheme } from '@/components/ThemeProvider'
+import { GlobalSearch } from '@/components/GlobalSearch'
 
 export function Header() {
   const [open, setOpen] = useState(false)
@@ -149,6 +150,12 @@ export function Header() {
                     >
                       Merch Store
                     </Link>
+                    <Link 
+                      href="/fan-club" 
+                      className="block px-4 py-3 hover:bg-base-100 dark:hover:bg-white/10 transition"
+                    >
+                      Fan Club
+                    </Link>
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -213,6 +220,8 @@ export function Header() {
           </nav>
 
           <div className="flex items-center gap-4">
+            <GlobalSearch />
+            
             <button
               onClick={toggleTheme}
               className="p-2 rounded-lg hover:bg-base-100 dark:hover:bg-white/10 transition"
@@ -270,7 +279,44 @@ export function Header() {
                 Artist Portal
               </Link>
             </div>
-            <Link href="/news" className="block rounded-lg px-3 py-2 bg-white/5 hover:bg-white/10" onClick={()=>setOpen(false)}>
+            
+            {/* Mobile Music section */}
+            <div className="space-y-1">
+              <div className="text-xs uppercase tracking-wider text-base-500 dark:text-white/50 px-3 pt-2">Music & Media</div>
+              <Link 
+                href="/music" 
+                className="block rounded-lg px-3 py-2 bg-base-100 dark:bg-white/5 hover:bg-base-200 dark:hover:bg-white/10"
+                onClick={()=>setOpen(false)}
+              >
+                Releases
+              </Link>
+              <Link 
+                href="/events" 
+                className="block rounded-lg px-3 py-2 bg-base-100 dark:bg-white/5 hover:bg-base-200 dark:hover:bg-white/10 ml-4"
+                onClick={()=>setOpen(false)}
+              >
+                Events & Shows
+              </Link>
+              <Link 
+                href="/merch" 
+                className="block rounded-lg px-3 py-2 bg-base-100 dark:bg-white/5 hover:bg-base-200 dark:hover:bg-white/10 ml-4"
+                onClick={()=>setOpen(false)}
+              >
+                Merch Store
+              </Link>
+              <Link 
+                href="/fan-club" 
+                className="block rounded-lg px-3 py-2 bg-base-100 dark:bg-white/5 hover:bg-base-200 dark:hover:bg-white/10 ml-4"
+                onClick={()=>setOpen(false)}
+              >
+                Fan Club
+              </Link>
+            </div>
+            
+            <Link href="/blog" className="block rounded-lg px-3 py-2 bg-base-100 dark:bg-white/5 hover:bg-base-200 dark:hover:bg-white/10" onClick={()=>setOpen(false)}>
+              Blog
+            </Link>
+            <Link href="/news" className="block rounded-lg px-3 py-2 bg-base-100 dark:bg-white/5 hover:bg-base-200 dark:hover:bg-white/10" onClick={()=>setOpen(false)}>
               News
             </Link>
             <Link href="/contact" className="block rounded-lg px-3 py-2 bg-white/5 hover:bg-white/10" onClick={()=>setOpen(false)}>
