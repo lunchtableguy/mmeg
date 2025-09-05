@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import { Cookie, X, Settings, Check, Shield } from 'lucide-react'
-import { getClientConsent, CONSENT_VERSION } from '@/lib/consent'
+import { getClientConsent, CONSENT_VERSION } from '@/lib/consent-client'
 
 export function CookieConsentBanner() {
   const [showBanner, setShowBanner] = useState(false)

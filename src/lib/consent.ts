@@ -1,4 +1,5 @@
 import { cookies, headers } from 'next/headers'
+import 'server-only'
 
 export type ConsentFlags = {
   necessary: true
@@ -52,35 +53,3 @@ export async function getServerConsent(): Promise<ConsentFlags> {
   }
 }
 
-// Client-side consent reader
-export function getClientConsent(): ConsentFlags | null {
-  if (typeof window === 'undefined') return null
-  
-  try {
-    const cookie = document.cookie
-      .split('; ')
-      .find(row => row.startsWith(CONSENT_COOKIE + '='))
-      ?.split('=')[1]
-    
-    if (!cookie) return null
-    
-    const parsed = JSON.parse(decodeURIComponent(cookie)) as ConsentFlags
-    const hasGpc = typeof (navigator as any).globalPrivacyControl === 'boolean' && 
-                   (navigator as any).globalPrivacyControl
-    
-    // Apply GPC restrictions if needed
-    if (hasGpc && (!parsed.gpc || parsed.advertising || parsed.analytics)) {
-      return { 
-        ...parsed, 
-        gpc: true, 
-        doNotSellShare: true, 
-        advertising: false, 
-        analytics: false 
-      }
-    }
-    
-    return parsed
-  } catch {
-    return null
-  }
-}

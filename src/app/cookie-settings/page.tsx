@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { Cookie, Check, Shield } from 'lucide-react'
-import { getClientConsent } from '@/lib/consent'
+import { getClientConsent } from '@/lib/consent-client'
 
 export default function CookieSettingsPage() {
   const [functional, setFunctional] = useState(false)
