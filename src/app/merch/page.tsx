@@ -1,7 +1,6 @@
 import { Metadata } from 'next'
-import Link from 'next/link'
 import Image from 'next/image'
-import { ShoppingBag, Star, Filter } from 'lucide-react'
+import { ShoppingBag, Filter } from 'lucide-react'
 
 export const metadata: Metadata = {
   title: 'Merch Store',

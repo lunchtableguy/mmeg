@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { 
-  BarChart3, TrendingUp, Users, Music, Eye, Download, 
+  TrendingUp, Users, Music, Download, 
   Calendar, Globe, DollarSign, Loader2, ArrowUp, ArrowDown 
 } from 'lucide-react'
 
@@ -53,22 +53,23 @@ export default function ArtistAnalyticsPage() {
   }, [status, session, router])
 
   useEffect(() => {
+    const fetchAnalytics = async () => {
+      try {
+        const response = await fetch(`/api/artists/analytics?range=${timeRange}`)
+        const data = await response.json()
+        setData(data)
+      } catch (error) {
+        console.error('Failed to fetch analytics:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
     if (session) {
       fetchAnalytics()
     }
   }, [session, timeRange])
 
-  const fetchAnalytics = async () => {
-    try {
-      const response = await fetch(`/api/artists/analytics?range=${timeRange}`)
-      const data = await response.json()
-      setData(data)
-    } catch (error) {
-      console.error('Failed to fetch analytics:', error)
-    } finally {
-      setLoading(false)
-    }
-  }
 
   if (status === 'loading' || loading) {
     return (
@@ -100,7 +101,7 @@ export default function ArtistAnalyticsPage() {
           <select
             value={timeRange}
             onChange={(e) => setTimeRange(e.target.value)}
-            className="px-4 py-2 rounded-lg bg-white dark:bg-base-800 border border-gray-300 dark:border-gray-700"
+            className="px-4 py-2 rounded-lg bg-gray-50 dark:bg-base-800 border border-gray-200 dark:border-gray-700 shadow-sm"
           >
             <option value="7d">Last 7 days</option>
             <option value="30d">Last 30 days</option>
@@ -111,7 +112,7 @@ export default function ArtistAnalyticsPage() {
 
         {/* Overview Stats */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-          <div className="bg-white dark:bg-base-800 rounded-xl p-6">
+          <div className="bg-gray-50 dark:bg-base-800 rounded-xl p-6 border border-gray-200 dark:border-white/10 shadow-sm">
             <div className="flex items-start justify-between mb-4">
               <div className="text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-blue-900/30 p-3 rounded-lg">
                 <Music className="w-6 h-6" />
@@ -129,7 +130,7 @@ export default function ArtistAnalyticsPage() {
             <p className="text-sm text-gray-600 dark:text-gray-400">Total Plays</p>
           </div>
 
-          <div className="bg-white dark:bg-base-800 rounded-xl p-6">
+          <div className="bg-gray-50 dark:bg-base-800 rounded-xl p-6 border border-gray-200 dark:border-white/10 shadow-sm">
             <div className="flex items-start justify-between mb-4">
               <div className="text-purple-600 dark:text-purple-400 bg-purple-100 dark:bg-purple-900/30 p-3 rounded-lg">
                 <Users className="w-6 h-6" />
@@ -147,7 +148,7 @@ export default function ArtistAnalyticsPage() {
             <p className="text-sm text-gray-600 dark:text-gray-400">Total Fans</p>
           </div>
 
-          <div className="bg-white dark:bg-base-800 rounded-xl p-6">
+          <div className="bg-gray-50 dark:bg-base-800 rounded-xl p-6 border border-gray-200 dark:border-white/10 shadow-sm">
             <div className="flex items-start justify-between mb-4">
               <div className="text-green-600 dark:text-green-400 bg-green-100 dark:bg-green-900/30 p-3 rounded-lg">
                 <DollarSign className="w-6 h-6" />
@@ -165,7 +166,7 @@ export default function ArtistAnalyticsPage() {
             <p className="text-sm text-gray-600 dark:text-gray-400">Total Revenue</p>
           </div>
 
-          <div className="bg-white dark:bg-base-800 rounded-xl p-6">
+          <div className="bg-gray-50 dark:bg-base-800 rounded-xl p-6 border border-gray-200 dark:border-white/10 shadow-sm">
             <div className="flex items-start justify-between mb-4">
               <div className="text-orange-600 dark:text-orange-400 bg-orange-100 dark:bg-orange-900/30 p-3 rounded-lg">
                 <Calendar className="w-6 h-6" />
@@ -181,7 +182,7 @@ export default function ArtistAnalyticsPage() {
         {/* Charts Section */}
         <div className="grid lg:grid-cols-3 gap-8 mb-12">
           {/* Plays Over Time */}
-          <div className="lg:col-span-2 bg-white dark:bg-base-800 rounded-xl p-6">
+          <div className="lg:col-span-2 bg-gray-50 dark:bg-base-800 rounded-xl p-6 border border-gray-200 dark:border-white/10 shadow-sm">
             <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
               <TrendingUp className="w-5 h-5" />
               Plays Over Time
@@ -210,7 +211,7 @@ export default function ArtistAnalyticsPage() {
           </div>
 
           {/* Top Tracks */}
-          <div className="bg-white dark:bg-base-800 rounded-xl p-6">
+          <div className="bg-gray-50 dark:bg-base-800 rounded-xl p-6 border border-gray-200 dark:border-white/10 shadow-sm">
             <h2 className="text-xl font-bold mb-6">Top Tracks</h2>
             <div className="space-y-4">
               {data.topTracks.map((track, index) => (
@@ -233,7 +234,7 @@ export default function ArtistAnalyticsPage() {
         {/* Additional Stats */}
         <div className="grid md:grid-cols-2 gap-8">
           {/* Demographics */}
-          <div className="bg-white dark:bg-base-800 rounded-xl p-6">
+          <div className="bg-gray-50 dark:bg-base-800 rounded-xl p-6 border border-gray-200 dark:border-white/10 shadow-sm">
             <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
               <Globe className="w-5 h-5" />
               Top Countries
@@ -257,7 +258,7 @@ export default function ArtistAnalyticsPage() {
           </div>
 
           {/* Revenue Sources */}
-          <div className="bg-white dark:bg-base-800 rounded-xl p-6">
+          <div className="bg-gray-50 dark:bg-base-800 rounded-xl p-6 border border-gray-200 dark:border-white/10 shadow-sm">
             <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
               <DollarSign className="w-5 h-5" />
               Revenue Sources

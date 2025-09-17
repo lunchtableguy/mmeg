@@ -14,7 +14,8 @@ export async function POST(request: NextRequest) {
     }
 
     const data = await request.json()
-    const { tier, paymentMethod, ...paymentDetails } = data
+    const { tier, paymentMethod: _paymentMethod, ..._paymentDetails } = data
+    // paymentMethod and paymentDetails would be used for payment processing
 
     // Check if user already has an active membership
     const existingMembership = await prisma.membership.findFirst({

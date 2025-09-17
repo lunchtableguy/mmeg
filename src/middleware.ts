@@ -1,18 +1,30 @@
 import { NextResponse } from "next/server";
 import { withAuth } from "next-auth/middleware";
-import { hasRole } from "./lib/permissions";
 
 export default withAuth(
-  function middleware(req) {
+  function middleware(_req) {
     return NextResponse.next();
   },
   {
     pages: {
-      signIn: "/auth/signin",
+      signIn: "/artists/sign-in",
     },
     callbacks: {
       authorized: ({ req, token }) => {
         const path = req.nextUrl.pathname;
+        
+        // Artists pages require authentication
+        if (path.startsWith("/artists/dashboard") || 
+            path.startsWith("/artists/analytics") || 
+            path.startsWith("/artists/profile") ||
+            path.startsWith("/artists/music") ||
+            path.startsWith("/artists/events") ||
+            path.startsWith("/artists/messages") ||
+            path.startsWith("/artists/documents") ||
+            path.startsWith("/artists/community") ||
+            path.startsWith("/artists/settings")) {
+          return !!token;
+        }
         
         if (path.startsWith("/portal")) {
           return !!token;
@@ -38,6 +50,15 @@ export default withAuth(
 
 export const config = {
   matcher: [
+    "/artists/dashboard/:path*",
+    "/artists/analytics/:path*",
+    "/artists/profile/:path*",
+    "/artists/music/:path*",
+    "/artists/events/:path*",
+    "/artists/messages/:path*",
+    "/artists/documents/:path*",
+    "/artists/community/:path*",
+    "/artists/settings/:path*",
     "/portal/:path*", 
     "/owner/:path*",
     "/admin/:path*", 

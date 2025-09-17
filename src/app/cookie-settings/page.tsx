@@ -29,7 +29,7 @@ export default function CookieSettingsPage() {
     setGpc(hasGpc)
   }, [])
 
-  const handleSave = async (custom?: any, source = 'settings') => {
+  const handleSave = async (custom?: { functional: boolean; analytics: boolean; advertising: boolean; doNotSellShare: boolean; source: string }, source = 'settings') => {
     setLoading(true)
     const payload = custom || {
       functional,

@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { Search, Loader2, Music, Calendar, FileText, ShoppingBag, Users, Disc, Filter } from 'lucide-react'
+import { Search, Loader2, Music, Calendar, FileText, ShoppingBag, Users, Disc } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
 
@@ -224,7 +224,7 @@ export function SearchResults() {
                   Tracks
                 </h2>
                 <div className="bg-white dark:bg-base-800 rounded-xl overflow-hidden">
-                  {results.results.tracks.map((track, index) => (
+                  {results.results.tracks.map((track) => (
                     <Link
                       key={track.id}
                       href={`/music/track/${track.id}`}

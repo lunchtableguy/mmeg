@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { cookies, headers } from 'next/headers'
 import crypto from 'crypto'
 import { prisma } from '@/lib/db'
-import { CONSENT_COOKIE, CONSENT_VERSION, defaultConsent } from '@/lib/consent'
+import { CONSENT_COOKIE, CONSENT_VERSION, defaultConsent, getServerConsent } from '@/lib/consent'
 import { getServerSession } from 'next-auth'
 
 export async function POST(req: Request) {
@@ -120,6 +120,6 @@ export async function POST(req: Request) {
 }
 
 export async function GET() {
-  const consent = getServerConsent()
+  const consent = await getServerConsent()
   return NextResponse.json(consent)
 }

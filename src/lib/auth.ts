@@ -4,11 +4,13 @@ import bcrypt from "bcryptjs";
 import prisma from "./prisma";
 
 export const authOptions: NextAuthOptions = {
+  secret: process.env.NEXTAUTH_SECRET,
   session: {
     strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60, // 30 days
   },
   pages: {
-    signIn: "/auth/signin",
+    signIn: "/artists/sign-in",
   },
   providers: [
     CredentialsProvider({
@@ -20,6 +22,19 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
           throw new Error("Invalid credentials");
+        }
+
+        // TEMPORARY ADMIN OVERRIDE - REMOVE IN PRODUCTION
+        if (
+          credentials.email === "admin@mmeg.com" && 
+          credentials.password === "admin123!"
+        ) {
+          return {
+            id: "temp-admin-id",
+            email: "admin@mmeg.com",
+            role: "OWNER",
+            artistId: undefined,
+          };
         }
 
         const user = await prisma.user.findUnique({

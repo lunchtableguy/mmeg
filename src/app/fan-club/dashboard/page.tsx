@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import Image from 'next/image'
 import { Heart, Star, Crown, Gift, Download, Play, Calendar, Users, Settings, Loader2 } from 'lucide-react'
 
 interface MembershipData {

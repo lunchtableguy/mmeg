@@ -19,42 +19,42 @@ export async function GET(request: NextRequest) {
 
     // Search Artists/Bands
     if (!type || type === 'artists') {
-      const artists = await prisma.user.findMany({
+      const artists = await prisma.artist.findMany({
         where: {
-          AND: [
-            { role: 'BAND' },
-            {
-              OR: [
-                { name: { contains: query, mode: 'insensitive' } },
-                { artistProfile: { bio: { contains: query, mode: 'insensitive' } } }
-              ]
-            }
+          OR: [
+            { bandName: { contains: query, mode: 'insensitive' } },
+            { bio: { contains: query, mode: 'insensitive' } }
           ]
         },
         select: {
           id: true,
-          name: true,
-          image: true,
-          artistProfile: {
+          bandName: true,
+          profileImage: true,
+          bio: true,
+          user: {
             select: {
-              bio: true,
-              genre: true
+              email: true
             }
           }
         },
         take: limit
       })
-      results.artists = artists
+      results.artists = artists.map(artist => ({
+        id: artist.id,
+        name: artist.bandName,
+        image: artist.profileImage,
+        artistProfile: {
+          bio: artist.bio,
+          genre: null
+        }
+      }))
     }
 
     // Search Albums
     if (!type || type === 'albums') {
       const albums = await prisma.album.findMany({
         where: {
-          OR: [
-            { title: { contains: query, mode: 'insensitive' } },
-            { description: { contains: query, mode: 'insensitive' } }
-          ]
+          title: { contains: query, mode: 'insensitive' }
         },
         select: {
           id: true,
@@ -64,7 +64,7 @@ export async function GET(request: NextRequest) {
           artist: {
             select: {
               id: true,
-              name: true
+              bandName: true
             }
           }
         },
@@ -80,7 +80,7 @@ export async function GET(request: NextRequest) {
           OR: [
             { title: { contains: query, mode: 'insensitive' } },
             { album: { title: { contains: query, mode: 'insensitive' } } },
-            { album: { artist: { name: { contains: query, mode: 'insensitive' } } } }
+            { album: { artist: { bandName: { contains: query, mode: 'insensitive' } } } }
           ]
         },
         select: {
@@ -95,7 +95,7 @@ export async function GET(request: NextRequest) {
               artist: {
                 select: {
                   id: true,
-                  name: true
+                  bandName: true
                 }
               }
             }
@@ -123,11 +123,11 @@ export async function GET(request: NextRequest) {
           date: true,
           venue: true,
           city: true,
-          ticketUrl: true,
+          ticketLink: true,
           artist: {
             select: {
               id: true,
-              name: true
+              bandName: true
             }
           }
         },
@@ -145,8 +145,7 @@ export async function GET(request: NextRequest) {
           OR: [
             { title: { contains: query, mode: 'insensitive' } },
             { excerpt: { contains: query, mode: 'insensitive' } },
-            { content: { contains: query, mode: 'insensitive' } },
-            { author: { name: { contains: query, mode: 'insensitive' } } }
+            { content: { contains: query, mode: 'insensitive' } }
           ]
         },
         select: {
@@ -158,7 +157,7 @@ export async function GET(request: NextRequest) {
           author: {
             select: {
               id: true,
-              name: true
+              email: true
             }
           }
         },
@@ -172,11 +171,10 @@ export async function GET(request: NextRequest) {
     if (!type || type === 'merch') {
       const merchItems = await prisma.merchItem.findMany({
         where: {
-          available: true,
+          active: true,
           OR: [
             { name: { contains: query, mode: 'insensitive' } },
-            { description: { contains: query, mode: 'insensitive' } },
-            { category: { contains: query, mode: 'insensitive' } }
+            { description: { contains: query, mode: 'insensitive' } }
           ]
         },
         select: {
@@ -184,8 +182,7 @@ export async function GET(request: NextRequest) {
           name: true,
           description: true,
           price: true,
-          images: true,
-          category: true
+          images: true
         },
         take: limit
       })

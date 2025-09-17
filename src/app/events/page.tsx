@@ -1,5 +1,4 @@
 import { Metadata } from 'next'
-import Link from 'next/link'
 import Image from 'next/image'
 import { Calendar, MapPin, Ticket, Video, Users, PartyPopper } from 'lucide-react'
 

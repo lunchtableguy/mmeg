@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
@@ -33,7 +33,7 @@ const MEMBERSHIP_TIERS = {
   }
 }
 
-export default function JoinFanClubPage() {
+function JoinFanClubContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const { data: session, status } = useSession()
@@ -76,7 +76,7 @@ export default function JoinFanClubPage() {
         } else {
           alert('Failed to join. Please try again.')
         }
-      } catch (error) {
+      } catch (_error) {
         alert('An error occurred. Please try again.')
       } finally {
         setLoading(false)
@@ -108,7 +108,7 @@ export default function JoinFanClubPage() {
       } else {
         alert('Payment failed. Please try again.')
       }
-    } catch (error) {
+    } catch (_error) {
       alert('An error occurred. Please try again.')
     } finally {
       setLoading(false)
@@ -363,5 +363,13 @@ export default function JoinFanClubPage() {
         )}
       </div>
     </div>
+  )
+}
+
+export default function JoinFanClubPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><Loader2 className="w-8 h-8 animate-spin" /></div>}>
+      <JoinFanClubContent />
+    </Suspense>
   )
 }

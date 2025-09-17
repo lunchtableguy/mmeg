@@ -132,7 +132,7 @@ export default function ArtistDashboard() {
         {/* Quick Stats */}
         <div className="grid sm:grid-cols-3 gap-6 mb-12">
           {quickStats.map((stat, index) => (
-            <div key={index} className="bg-white dark:bg-base-800 rounded-xl p-6">
+            <div key={index} className="bg-gray-50 dark:bg-base-800 rounded-xl p-6 border border-gray-200 dark:border-white/10 shadow-sm hover:shadow-md transition-shadow">
               <div className="flex items-start justify-between mb-4">
                 <div className="text-gray-600 dark:text-gray-400">
                   {stat.icon}
@@ -155,7 +155,7 @@ export default function ArtistDashboard() {
             <Link
               key={section.title}
               href={section.href}
-              className="bg-white dark:bg-base-800 rounded-xl p-6 hover:shadow-xl transition-all hover:-translate-y-1"
+              className="bg-gray-50 dark:bg-base-800 rounded-xl p-6 border border-gray-200 dark:border-white/10 shadow-sm hover:shadow-lg transition-all hover:-translate-y-1"
             >
               <div className={`${section.color} mb-4`}>
                 {section.icon}
@@ -180,7 +180,7 @@ export default function ArtistDashboard() {
         </div>
 
         {/* Recent Activity */}
-        <div className="mt-12 bg-white dark:bg-base-800 rounded-xl p-8">
+        <div className="mt-12 bg-gray-50 dark:bg-base-800 rounded-xl p-8 border border-gray-200 dark:border-white/10 shadow-sm">
           <h2 className="text-2xl font-bold mb-6">Recent Activity</h2>
           <div className="space-y-4">
             <div className="flex items-start gap-4 pb-4 border-b border-gray-100 dark:border-gray-700">

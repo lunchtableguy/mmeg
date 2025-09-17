@@ -48,7 +48,7 @@ export async function getServerConsent(): Promise<ConsentFlags> {
       return { ...parsed, gpc: true, doNotSellShare: true, advertising: false, analytics: false }
     }
     return parsed
-  } catch {
+  } catch (_error) {
     return defaultConsent(gpc)
   }
 }

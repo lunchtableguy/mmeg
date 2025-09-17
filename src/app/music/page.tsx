@@ -1,5 +1,4 @@
 import { Metadata } from 'next'
-import Link from 'next/link'
 import Image from 'next/image'
 import { Calendar, Music, PlayCircle } from 'lucide-react'
 

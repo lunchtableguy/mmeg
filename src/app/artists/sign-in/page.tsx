@@ -1,18 +1,42 @@
 'use client'
 import { motion } from 'framer-motion'
-import { Lock, Mail, ArrowRight, Shield } from 'lucide-react'
+import { Lock, Mail, ArrowRight, Shield, Loader2 } from 'lucide-react'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useState, Suspense } from 'react'
+import { signIn } from 'next-auth/react'
+import { useRouter, useSearchParams } from 'next/navigation'
 
-export default function ArtistsSignInPage() {
+function SignInForm() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const redirect = searchParams.get('redirect') || '/artists/dashboard'
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // In a real app, this would use NextAuth signIn
-    // For now, we'll just redirect to dashboard
-    window.location.href = '/artists/dashboard'
+    setLoading(true)
+    setError('')
+
+    try {
+      const result = await signIn('credentials', {
+        email,
+        password,
+        redirect: false,
+      })
+
+      if (result?.error) {
+        setError('Invalid email or password')
+      } else {
+        router.push(redirect)
+      }
+    } catch (_err) {
+      setError('An error occurred. Please try again.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -34,6 +58,11 @@ export default function ArtistsSignInPage() {
 
         <div className="rounded-2xl bg-white dark:bg-white/5 ring-1 ring-base-200 dark:ring-white/10 p-8 shadow-lg">
           <form onSubmit={handleSubmit} className="space-y-6">
+            {error && (
+              <div className="p-4 rounded-lg bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/30 text-red-600 dark:text-red-400 text-sm">
+                {error}
+              </div>
+            )}
             <div>
               <label htmlFor="email" className="block text-sm font-medium mb-2 text-base-700 dark:text-white">
                 Email Address
@@ -82,10 +111,20 @@ export default function ArtistsSignInPage() {
 
             <button
               type="submit"
-              className="w-full rounded-xl bg-blue-500 dark:bg-accent-600 text-white dark:text-black px-6 py-3 font-medium hover:bg-blue-600 dark:hover:bg-accent-700 transition flex items-center justify-center gap-2 shadow-lg"
+              disabled={loading}
+              className="w-full rounded-xl bg-blue-500 dark:bg-accent-600 text-white dark:text-black px-6 py-3 font-medium hover:bg-blue-600 dark:hover:bg-accent-700 transition flex items-center justify-center gap-2 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Sign In to Portal
-              <ArrowRight className="w-4 h-4" />
+              {loading ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Signing in...
+                </>
+              ) : (
+                <>
+                  Sign In to Portal
+                  <ArrowRight className="w-4 h-4" />
+                </>
+              )}
             </button>
           </form>
 
@@ -125,5 +164,17 @@ export default function ArtistsSignInPage() {
         </motion.div>
       </motion.div>
     </section>
+  )
+}
+
+export default function ArtistsSignInPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin" />
+      </div>
+    }>
+      <SignInForm />
+    </Suspense>
   )
 }

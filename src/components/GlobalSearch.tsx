@@ -2,8 +2,6 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { Search, X, Loader2, Music, Calendar, FileText, ShoppingBag, Users, Disc } from 'lucide-react'
-import Link from 'next/link'
-import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
 interface SearchResult {
@@ -28,7 +26,62 @@ export function GlobalSearch() {
   const searchRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const router = useRouter()
-  const searchTimeout = useRef<NodeJS.Timeout>()
+  const searchTimeout = useRef<NodeJS.Timeout | undefined>(undefined)
+
+  const getTotalItems = useCallback(() => {
+    if (!results) return 0
+    let count = 0
+    Object.values(results.results).forEach(items => {
+      if (Array.isArray(items)) count += items.length
+    })
+    return count
+  }, [results])
+
+  const handleResultClick = useCallback((index: number) => {
+    if (!results) return
+    
+    let currentIndex = 0
+    
+    // Navigate based on selected index
+    for (const [type, items] of Object.entries(results.results)) {
+      if (Array.isArray(items)) {
+        for (const item of items) {
+          if (currentIndex === index) {
+            // Navigate to appropriate page based on type
+            let url = ''
+            switch (type) {
+              case 'artists':
+                url = `/artists/${item.id}`
+                break
+              case 'albums':
+                url = `/music/album/${item.id}`
+                break
+              case 'tracks':
+                url = `/music/track/${item.id}`
+                break
+              case 'events':
+                url = `/events/${item.id}`
+                break
+              case 'blog':
+                url = `/blog/${item.slug}`
+                break
+              case 'merch':
+                url = `/merch/${item.id}`
+                break
+            }
+            if (url) {
+              router.push(url)
+              setIsOpen(false)
+              setQuery('')
+              setResults(null)
+            }
+            return
+          }
+          currentIndex++
+        }
+      }
+    }
+  }, [results, router])
 
   // Close on click outside
   useEffect(() => {
@@ -75,7 +128,7 @@ export function GlobalSearch() {
 
     document.addEventListener('keydown', handleKeyDown)
     return () => document.removeEventListener('keydown', handleKeyDown)
-  }, [isOpen, results, selectedIndex])
+  }, [isOpen, results, selectedIndex, getTotalItems, handleResultClick])
 
   // Focus input when opened
   useEffect(() => {
@@ -117,61 +170,6 @@ export function GlobalSearch() {
     searchTimeout.current = setTimeout(() => {
       performSearch(value)
     }, 300)
-  }
-
-  const getTotalItems = () => {
-    if (!results) return 0
-    let count = 0
-    Object.values(results.results).forEach(items => {
-      if (Array.isArray(items)) count += items.length
-    })
-    return count
-  }
-
-  const handleResultClick = (index: number) => {
-    if (!results) return
-    
-    let currentIndex = 0
-    
-    // Navigate based on selected index
-    for (const [type, items] of Object.entries(results.results)) {
-      if (Array.isArray(items)) {
-        for (const item of items) {
-          if (currentIndex === index) {
-            // Navigate to appropriate page based on type
-            let url = ''
-            switch (type) {
-              case 'artists':
-                url = `/artists/${item.id}`
-                break
-              case 'albums':
-                url = `/music/album/${item.id}`
-                break
-              case 'tracks':
-                url = `/music/track/${item.id}`
-                break
-              case 'events':
-                url = `/events/${item.id}`
-                break
-              case 'blog':
-                url = `/blog/${item.slug}`
-                break
-              case 'merch':
-                url = `/merch/${item.id}`
-                break
-            }
-            if (url) {
-              router.push(url)
-              setIsOpen(false)
-              setQuery('')
-              setResults(null)
-            }
-            return
-          }
-          currentIndex++
-        }
-      }
-    }
   }
 
   const getIcon = (type: string) => {
@@ -241,7 +239,7 @@ export function GlobalSearch() {
                   {Object.entries(results.results).map(([type, items]) => {
                     if (!Array.isArray(items) || items.length === 0) return null
                     
-                    const typeResults = items.map((item, index) => {
+                    const typeResults = items.map((item) => {
                       const currentResultIndex = resultIndex++
                       const isSelected = currentResultIndex === selectedIndex
                       
@@ -260,12 +258,12 @@ export function GlobalSearch() {
                             </div>
                             {type === 'tracks' && item.album && (
                               <div className="text-sm text-gray-600 dark:text-gray-400">
-                                {item.album.title} • {item.album.artist.name}
+                                {item.album.title} • {item.album.artist.bandName}
                               </div>
                             )}
                             {type === 'albums' && item.artist && (
                               <div className="text-sm text-gray-600 dark:text-gray-400">
-                                by {item.artist.name}
+                                by {item.artist.bandName}
                               </div>
                             )}
                             {type === 'events' && (
@@ -280,7 +278,7 @@ export function GlobalSearch() {
                             )}
                             {type === 'merch' && (
                               <div className="text-sm text-gray-600 dark:text-gray-400">
-                                ${item.price} • {item.category}
+                                ${item.price}
                               </div>
                             )}
                           </div>

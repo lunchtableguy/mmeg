@@ -40,7 +40,7 @@ export function getClientConsent(): ConsentFlags | null {
     }
     
     return parsed
-  } catch {
+  } catch (_error) {
     return null
   }
 }

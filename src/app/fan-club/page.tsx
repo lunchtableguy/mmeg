@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
-import { Heart, Star, Crown, Gift, Music, Users, Calendar, Mail } from 'lucide-react'
+import { Heart, Star, Crown, Gift, Music, Users, Calendar } from 'lucide-react'
 
 export const metadata: Metadata = {
   title: 'Fan Club',
