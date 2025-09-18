@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="600" fill="#1a1a2e"/>
+  
+  <!-- Stage light gradient -->
+  <defs>
+    <radialGradient id="spotlight">
+      <stop offset="0%" stop-color="#4a5568" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#1a1a2e" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  
+  <!-- Spotlight effect -->
+  <ellipse cx="400" cy="600" rx="400" ry="300" fill="url(#spotlight)"/>
+  
+  <!-- Person silhouette -->
+  <g transform="translate(400, 300)">
+    <!-- Body -->
+    <ellipse cx="0" cy="80" rx="60" ry="100" fill="#2d3748"/>
+    
+    <!-- Head -->
+    <circle cx="0" cy="-30" r="40" fill="#2d3748"/>
+    
+    <!-- Arm holding microphone -->
+    <path d="M -30 40 Q -50 0 -60 -20" stroke="#2d3748" stroke-width="25" fill="none" stroke-linecap="round"/>
+    
+    <!-- Microphone -->
+    <g transform="translate(-60, -20) rotate(-30)">
+      <!-- Mic handle -->
+      <rect x="-5" y="0" width="10" height="40" fill="#4a5568"/>
+      <!-- Mic head -->
+      <ellipse cx="0" cy="-10" rx="15" ry="20" fill="#718096"/>
+      <!-- Mic grille -->
+      <ellipse cx="0" cy="-10" rx="15" ry="20" fill="none" stroke="#1a202c" stroke-width="1"/>
+      <line x1="-10" y1="-10" x2="10" y2="-10" stroke="#1a202c" stroke-width="1"/>
+      <line x1="-10" y1="-5" x2="10" y2="-5" stroke="#1a202c" stroke-width="1"/>
+      <line x1="-10" y1="-15" x2="10" y2="-15" stroke="#1a202c" stroke-width="1"/>
+    </g>
+    
+    <!-- Other arm -->
+    <path d="M 30 40 Q 40 60 35 80" stroke="#2d3748" stroke-width="25" fill="none" stroke-linecap="round"/>
+  </g>
+  
+  <!-- Stage line -->
+  <line x1="100" y1="500" x2="700" y2="500" stroke="#4a5568" stroke-width="2"/>
+  
+  <!-- MMEG text -->
+  <text x="400" y="550" text-anchor="middle" fill="#718096" font-size="24" font-family="Arial, sans-serif" letter-spacing="4">MMEG</text>
+</svg>

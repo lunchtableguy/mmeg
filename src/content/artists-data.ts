@@ -5,8 +5,8 @@ export const ARTISTS_DATA: Artist[] = [
     slug: 'eclyp5ed',
     name: 'ECLYP5ED',
     tagline: 'Silhouette K‑Pop — neon edges, future choreography.',
-    image: '/artists/eclyp5ed.jpg',
-    coverImage: '/artists/eclyp5ed-cover.jpg',
+    image: '/placeholder-performer.svg',
+    coverImage: '/placeholder-performer.svg',
     bio: `ECLYP5ED is redefining K-Pop with their signature blend of dark electronica and razor-sharp choreography. Formed in 2022, this five-member group has quickly risen to international acclaim with their mysterious personas and genre-bending sound.
 
 Their debut EP "Shadow Protocol" topped charts in 12 countries, while their viral dance challenges have accumulated over 500M views on TikTok. Known for their theatrical live performances and cryptic visual storytelling, ECLYP5ED continues to push the boundaries of what K-Pop can be.`,
@@ -33,7 +33,7 @@ Their debut EP "Shadow Protocol" topped charts in 12 countries, while their vira
         title: 'Shadow Protocol',
         type: 'ep',
         releaseDate: '2023-10-13',
-        cover: '/albums/shadow-protocol.jpg',
+        cover: '/placeholder-performer.svg',
         spotifyUrl: '#',
         appleMusicUrl: '#'
       },
@@ -42,7 +42,7 @@ Their debut EP "Shadow Protocol" topped charts in 12 countries, while their vira
         title: 'Neon Dreams',
         type: 'single',
         releaseDate: '2024-02-14',
-        cover: '/albums/neon-dreams.jpg',
+        cover: '/placeholder-performer.svg',
         spotifyUrl: '#',
         appleMusicUrl: '#'
       },
@@ -51,7 +51,7 @@ Their debut EP "Shadow Protocol" topped charts in 12 countries, while their vira
         title: 'Digital Hearts',
         type: 'album',
         releaseDate: '2024-06-21',
-        cover: '/albums/digital-hearts.jpg',
+        cover: '/placeholder-performer.svg',
         spotifyUrl: '#',
         appleMusicUrl: '#'
       }
@@ -125,8 +125,8 @@ Their debut EP "Shadow Protocol" topped charts in 12 countries, while their vira
     slug: 'jane-lee',
     name: 'Jane Lee',
     tagline: 'Ballads with spine — Seoul to the world.',
-    image: '/artists/jane-lee.jpg',
-    coverImage: '/artists/jane-lee-cover.jpg',
+    image: '/placeholder-performer.svg',
+    coverImage: '/placeholder-performer.svg',
     bio: `Jane Lee's voice carries the weight of tradition while breaking new ground. The Seoul-born singer-songwriter crafts emotionally charged ballads that blend Korean musical heritage with contemporary pop sensibilities.
 
 After years of writing for other artists, Jane stepped into the spotlight with her debut album "Echoes of Seoul," which earned critical acclaim for its raw honesty and sophisticated production. Her music videos, known for their cinematic quality and emotional depth, have garnered millions of views worldwide.`,
@@ -150,7 +150,7 @@ After years of writing for other artists, Jane stepped into the spotlight with h
         title: 'Echoes of Seoul',
         type: 'album',
         releaseDate: '2023-05-10',
-        cover: '/albums/echoes-of-seoul.jpg',
+        cover: '/placeholder-performer.svg',
         spotifyUrl: '#',
         appleMusicUrl: '#'
       },
@@ -159,7 +159,7 @@ After years of writing for other artists, Jane stepped into the spotlight with h
         title: 'Midnight Rain',
         type: 'single',
         releaseDate: '2024-01-20',
-        cover: '/albums/midnight-rain.jpg',
+        cover: '/placeholder-performer.svg',
         spotifyUrl: '#',
         appleMusicUrl: '#'
       }

@@ -152,7 +152,7 @@ export default function ArtistPage({ params }: { params: { slug: string } }) {
                       <div className="aspect-square rounded-lg bg-white/5 overflow-hidden mb-4">
                         <div 
                           className="w-full h-full bg-cover bg-center group-hover:scale-105 transition-transform duration-300"
-                          style={{ backgroundImage: `url(${release.cover || '/album-placeholder.jpg'})` }}
+                          style={{ backgroundImage: `url(${release.cover || '/placeholder-performer.svg'})` }}
                         />
                       </div>
                       <h3 className="font-semibold text-lg">{release.title}</h3>

@@ -10,7 +10,7 @@ export function ArtistCard({ artist }: { artist: { slug: string, name: string, t
         className="h-full flex flex-col overflow-hidden rounded-2xl bg-base-150 dark:bg-white/5 ring-1 ring-base-200 dark:ring-white/10 hover:ring-blue-500 hover:ring-2 dark:hover:ring-accent-600 transition shadow-sm hover:shadow-lg hover:shadow-blue-500/10">
         <div className="relative aspect-[4/3]">
           <Image
-            src={artist.image ?? '/artist-placeholder.jpg'}
+            src={artist.image ?? '/placeholder-performer.svg'}
             alt={artist.name}
             fill
             sizes="(max-width:768px) 100vw, (max-width:1200px) 50vw, 33vw"

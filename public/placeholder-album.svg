@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="600" height="600" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="600" height="600" fill="#1a1a2e"/>
+  
+  <!-- Vinyl record -->
+  <g transform="translate(300, 300)">
+    <!-- Outer ring -->
+    <circle cx="0" cy="0" r="250" fill="#2d3748"/>
+    <circle cx="0" cy="0" r="240" fill="#1a202c"/>
+    
+    <!-- Grooves -->
+    <circle cx="0" cy="0" r="200" fill="none" stroke="#2d3748" stroke-width="1" opacity="0.5"/>
+    <circle cx="0" cy="0" r="180" fill="none" stroke="#2d3748" stroke-width="1" opacity="0.5"/>
+    <circle cx="0" cy="0" r="160" fill="none" stroke="#2d3748" stroke-width="1" opacity="0.5"/>
+    <circle cx="0" cy="0" r="140" fill="none" stroke="#2d3748" stroke-width="1" opacity="0.5"/>
+    <circle cx="0" cy="0" r="120" fill="none" stroke="#2d3748" stroke-width="1" opacity="0.5"/>
+    <circle cx="0" cy="0" r="100" fill="none" stroke="#2d3748" stroke-width="1" opacity="0.5"/>
+    
+    <!-- Center label -->
+    <circle cx="0" cy="0" r="80" fill="#4a5568"/>
+    <circle cx="0" cy="0" r="75" fill="#2d3748"/>
+    
+    <!-- Center hole -->
+    <circle cx="0" cy="0" r="10" fill="#1a1a2e"/>
+    
+    <!-- Reflection -->
+    <ellipse cx="-50" cy="-50" rx="100" ry="40" fill="#718096" opacity="0.1" transform="rotate(-45)"/>
+  </g>
+  
+  <!-- MMEG text -->
+  <text x="300" y="320" text-anchor="middle" fill="#718096" font-size="20" font-family="Arial, sans-serif" letter-spacing="3">ALBUM</text>
+</svg>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800" height="450" viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="450" fill="#1a1a2e"/>
+  
+  <!-- Stage -->
+  <rect x="100" y="300" width="600" height="120" fill="#2d3748"/>
+  
+  <!-- Stage lights -->
+  <g>
+    <!-- Light beams -->
+    <path d="M 200 100 L 150 300 L 250 300 Z" fill="#4a5568" opacity="0.3"/>
+    <path d="M 400 100 L 350 300 L 450 300 Z" fill="#4a5568" opacity="0.3"/>
+    <path d="M 600 100 L 550 300 L 650 300 Z" fill="#4a5568" opacity="0.3"/>
+    
+    <!-- Light sources -->
+    <circle cx="200" cy="100" r="20" fill="#f7fafc"/>
+    <circle cx="400" cy="100" r="20" fill="#f7fafc"/>
+    <circle cx="600" cy="100" r="20" fill="#f7fafc"/>
+  </g>
+  
+  <!-- Crowd silhouettes -->
+  <g fill="#2d3748">
+    <ellipse cx="150" cy="400" rx="40" ry="60"/>
+    <ellipse cx="250" cy="410" rx="35" ry="55"/>
+    <ellipse cx="350" cy="405" rx="38" ry="58"/>
+    <ellipse cx="450" cy="408" rx="36" ry="56"/>
+    <ellipse cx="550" cy="402" rx="37" ry="57"/>
+    <ellipse cx="650" cy="406" rx="39" ry="59"/>
+  </g>
+  
+  <!-- EVENT text -->
+  <text x="400" y="250" text-anchor="middle" fill="#718096" font-size="32" font-family="Arial, sans-serif" letter-spacing="4">LIVE EVENT</text>
+</svg>
